@@ -4,12 +4,33 @@
   "description": "A customized Kubernetes style YAML formatter",
   "version": "0.0.1",
   "publisher": "kennylong",
+  "icon": "TODO:",
+  "repository": {
+    "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",
+    "type": "git"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://kennylong.io",
+  "author": {
+    "email": "im.longkai@gmail.com",
+    "name": "Kennylong",
+    "url": "https://kennylong.io"
+  },
+  "keywords": [
+    "Kubernetes",
+    "YAML",
+    "Formatter",
+    "Customization"
+  ],
+  "bugs": {
+    "url": "https://github.com/longkai/kubernetes-yaml-formatter/issues"
+  },
+  "categories": [
+    "Formatters"
+  ],
   "engines": {
     "vscode": "^1.71.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "onCommand:kubernetes-yaml-formatter.helloWorld"
   ],
