@@ -20,6 +20,20 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	// 👍 formatter implemented using API
+	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
+		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+			let txt = document.getText();
+			console.log(`document text before format: ${txt}`);
+			const firstLine = document.lineAt(0);
+			// TODO: format the content.
+			if (firstLine.text !== '42') {
+				return [vscode.TextEdit.insert(firstLine.range.start, '42\n')];
+			}
+			return [vscode.TextEdit.insert(firstLine.range.start, '')]; // nothing changed
+		}
+	});
 }
 
 // this method is called when your extension is deactivated

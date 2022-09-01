@@ -32,7 +32,8 @@
     "vscode": "^1.71.0"
   },
   "activationEvents": [
-    "onCommand:kubernetes-yaml-formatter.helloWorld"
+    "onCommand:kubernetes-yaml-formatter.helloWorld",
+    "onLanguage:yaml"
   ],
   "main": "./out/extension.js",
   "contributes": {
