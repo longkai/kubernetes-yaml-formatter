@@ -2,10 +2,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import * as process from 'child_process';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	
+
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "kubernetes-yaml-formatter" is now active!');
@@ -24,17 +26,25 @@ export function activate(context: vscode.ExtensionContext) {
 	// 👍 formatter implemented using API
 	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
 		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-			let txt = document.getText();
-			console.log(`document text before format: ${txt}`);
-			const firstLine = document.lineAt(0);
-			// TODO: format the content.
-			if (firstLine.text !== '42') {
-				return [vscode.TextEdit.insert(firstLine.range.start, '42\n')];
+			const txt = document.getText();
+			const sp = process.spawnSync(`yamlfmt`, [`-in`], {
+				input: txt,
+			});
+			if (sp.status !== 0) {
+				console.error(`format ${txt} fail: ${sp.stderr.toString()}`);
+				return [];
 			}
-			return [vscode.TextEdit.insert(firstLine.range.start, '')]; // nothing changed
+
+			const edits = vscode.TextEdit.replace(
+				new vscode.Range(
+					new vscode.Position(0, 0),
+					new vscode.Position(document.lineCount, document.lineAt(document.lineCount - 1).text.length)
+				), sp.stdout.toString(),
+			);
+			return [edits];
 		}
 	});
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
