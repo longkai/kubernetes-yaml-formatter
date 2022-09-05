@@ -69,6 +69,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 `);
 	} catch (err) {
 		console.error(`write config: ${err}`);
+		vscode.window.showErrorMessage(`write config file: ${err}`);
 	}
 }
 
@@ -81,6 +82,7 @@ function configFileLocation(context: vscode.ExtensionContext): string | undefine
 		fs.mkdirSync(fsPath, { recursive: true });
 	} catch (err) {
 		console.error(`mkdir ${fsPath}: ${err}`);
+		vscode.window.showErrorMessage(`mkdir extension storage uri path ${fsPath}: ${err}`);
 	}
 	return path.join(fsPath, "config.yaml");
 }
