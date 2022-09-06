@@ -74,9 +74,11 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 }
 
 function configFileLocation(context: vscode.ExtensionContext): string | undefined {
-	const fsPath = context.storageUri?.fsPath;
+	let fsPath = context.storageUri?.fsPath;
 	if (!fsPath) {
-		return undefined;
+		fsPath = "/tmp/kubernetes-yaml-formatter";
+		// maybe we are in the dev/debug mode.
+		console.log(`cannot get extension storage uri fs path, fallback ${fsPath}`);
 	}
 	try {
 		fs.mkdirSync(fsPath, { recursive: true });
