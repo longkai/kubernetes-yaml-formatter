@@ -62,10 +62,13 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 		console.error(`cannot get extension storage uri path`);
 		return;
 	}
+	const tabSize = vscode.workspace.getConfiguration("", {
+		languageId: `yaml`,
+	}).get(`editor.tabSize`, 2);
 	try {
 		fs.writeFileSync(file, `formatter:
   type: basic
-  indent: 4
+  indent: ${tabSize}
 `);
 	} catch (err) {
 		console.error(`write config: ${err}`);
