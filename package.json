@@ -4,7 +4,6 @@
   "description": "A customized Kubernetes style YAML formatter",
   "version": "0.0.1",
   "publisher": "kennylong",
-  "icon": "TODO:",
   "repository": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",
     "type": "git"
@@ -42,7 +41,17 @@
         "command": "kubernetes-yaml-formatter.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Use Compact Sequence Indent",
+      "properties": {
+        "compactSequenceIndent": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use compact sequence indent, i.e. no indent"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
