@@ -13,15 +13,25 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log(`Congratulations, your extension "kubernetes-yaml-formatter" is now active!`);
 
-	// TODO: add ext options.
 	writeConfigFile(context);
+	vscode.workspace.onDidChangeConfiguration(ev => {
+		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.compactSequenceIndent`);
+		if (!affected) {
+			affected = ev.affectsConfiguration(`files.eol`);
+		}
+
+		if (affected) {
+			console.log(`rewrite config file since something changed just now`);
+			writeConfigFile(context);
+		}
+	});
+	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('kubernetes-yaml-formatter.helloWorld', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
-		console.log(`${vscode.workspace.getConfiguration().get('kubernetes-yaml-formatter.compactSequenceIndent')}`);
 		vscode.window.showInformationMessage(`Hello World from Kubernetes YAML Formatter!`);
 	});
 
@@ -66,10 +76,26 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 	const tabSize = vscode.workspace.getConfiguration("", {
 		languageId: `yaml`,
 	}).get(`editor.tabSize`, 2);
+	let conf = vscode.workspace.getConfiguration();
+	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
+	let eof = "~";
+	switch (conf.get('files.eol')) {
+		case "\n":
+			eof = "lf";
+			break;
+		case "\r\n":
+			eof = "crlf";
+			break;
+		default:
+			eof = "~";
+			break;
+	}
 	try {
 		fs.writeFileSync(file, `formatter:
   type: basic
   indent: ${tabSize}
+  line_ending: ${eof}
+  compact_sequence_indent: ${compactSequenceIndent}
 `);
 	} catch (err) {
 		console.error(`write config: ${err}`);
