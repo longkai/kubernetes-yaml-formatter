@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as process from 'child_process';
 
@@ -106,7 +107,11 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 function configFileLocation(context: vscode.ExtensionContext): string | undefined {
 	let fsPath = context.storageUri?.fsPath;
 	if (!fsPath) {
-		fsPath = "/tmp/kubernetes-yaml-formatter";
+		try {
+			fsPath = fs.mkdtempSync(path.join(os.tmpdir(), 'kubernetes-yaml-formatter-'));
+		} catch (err) {
+			throw new Error(`create tmp dir: ${err}`);
+		}
 		// maybe we are in the dev/debug mode.
 		console.log(`cannot get extension storage uri fs path, fallback ${fsPath}`);
 	}
