@@ -50,6 +50,12 @@
           "description": "Use compact sequence indent, i.e. no indent"
         }
       }
+    },
+    "configurationDefaults": {
+      "[yaml]": {
+        "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
+        "editor.formatOnSave": true
+      }
     }
   },
   "scripts": {
