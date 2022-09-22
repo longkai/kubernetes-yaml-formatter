@@ -28,7 +28,7 @@
     "Formatters"
   ],
   "engines": {
-    "vscode": "^1.71.0"
+    "vscode": "^1.49.0"
   },
   "activationEvents": [
     "onStartupFinished"
