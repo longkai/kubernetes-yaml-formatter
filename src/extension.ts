@@ -48,8 +48,9 @@ export function activate(context: vscode.ExtensionContext) {
 				args.push(`-conf`);
 				args.push(confFile);
 			}
-			console.log(`args: ${args}`);
-			const sp = process.spawnSync(`yamlfmt`, args, {
+			// __dirname is `out`, so go back one level
+			const cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
+			const sp = process.spawnSync(cmd, args, {
 				input: txt,
 			});
 			if (sp.status !== 0) {
