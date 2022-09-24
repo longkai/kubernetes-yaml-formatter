@@ -97,6 +97,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
   type: basic
   indent: ${tabSize}
   line_ending: ${eof}
+  retain_line_breaks: true
   compact_sequence_indent: ${compactSequenceIndent}
 `);
 	} catch (err) {
@@ -109,7 +110,10 @@ function configFileLocation(context: vscode.ExtensionContext): string | undefine
 	let fsPath = context.storageUri?.fsPath;
 	if (!fsPath) {
 		try {
-			fsPath = fs.mkdtempSync(path.join(os.tmpdir(), 'kubernetes-yaml-formatter-'));
+			fsPath = path.join(os.tmpdir(), context.extension.id);
+			if (!fs.existsSync(fsPath)) {
+				fs.mkdirSync(fsPath);
+			}
 		} catch (err) {
 			throw new Error(`create tmp dir: ${err}`);
 		}
