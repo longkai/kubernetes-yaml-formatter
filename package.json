@@ -28,7 +28,7 @@
     "Formatters"
   ],
   "engines": {
-    "vscode": "^1.49.0"
+    "vscode": "^1.61.0"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -67,7 +67,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.71.0",
+    "@types/vscode": "^1.61.0",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
