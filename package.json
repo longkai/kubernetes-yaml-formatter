@@ -2,7 +2,7 @@
   "name": "kubernetes-yaml-formatter",
   "displayName": "Kubernetes YAML Formatter",
   "description": "A customized Kubernetes style YAML formatter",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "publisher": "kennylong",
   "repository": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",
