@@ -35,12 +35,6 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "kubernetes-yaml-formatter.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "configuration": {
       "title": "Use Compact Sequence Indent",
       "properties": {
