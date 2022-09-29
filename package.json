@@ -1,7 +1,8 @@
 {
   "name": "kubernetes-yaml-formatter",
   "displayName": "Kubernetes YAML Formatter",
-  "description": "A customized Kubernetes style YAML formatter",
+  "icon": "images/icon.png",
+  "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
   "version": "0.0.4",
   "publisher": "kennylong",
   "repository": {
@@ -19,7 +20,15 @@
     "Kubernetes",
     "YAML",
     "Formatter",
-    "Customization"
+    "Customization",
+    "DevOps",
+    "Github Actions",
+    "Helm",
+    "Ansible",
+    "Kustomize",
+    "CI",
+    "CD",
+    "Workflow"
   ],
   "bugs": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter/issues"
