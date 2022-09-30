@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as process from 'child_process';
+import { platform } from 'node:process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -38,7 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
 				args.push(confFile);
 			}
 			// __dirname is `out`, so go back one level
-			const cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
+			let cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
+			if (platform === 'win32') {
+				cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
+			}
 			const sp = process.spawnSync(cmd, args, {
 				input: txt,
 			});
