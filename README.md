@@ -58,7 +58,7 @@ It makes format yaml on save default to `true`, you can disable it:
 
 ## Thanks
 
-Thanks @iamlupeng1991 for the icon design!
+Thanks [lupengpeng](https://github.com/iamlupeng1991) for the icon design. It's great!
 
 Thanks the following projects:
 
@@ -67,6 +67,6 @@ Thanks the following projects:
 
 Without them there wouldn't be this extension.
 
-Throughout the process I learnt a lot and also made some contributions to the open source community.
+Throughout the process I learnt a lot and also made some contributions back to them.
 
 Definitely welcome your patches and contributions!

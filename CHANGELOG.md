@@ -4,7 +4,7 @@ All notable changes to the "kubernetes-yaml-formatter" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## 1.0.0 (12 Sep 2022)
+## 1.0.0 (30 Sep 2022)
 
 Hello, World!
 
