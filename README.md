@@ -1,8 +1,12 @@
 # Kubernetes Style YAML Formatter for Visual Studio Code
 
-A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/items?itemName=kennylong.kubernetes-yaml-formatter) that provides format support for [YAML](https://yaml.org) language.
+A [Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=kennylong.kubernetes-yaml-formatter) that provides format support for [YAML](https://yaml.org) language.
 
 You find the right format extension if you come from DevOps world, e.g., [Kubernetes](https://kubernetes.io/docs/concepts/), [Ansible Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html) or CI workflow like [Github Actions](https://docs.github.com/en/actions) and so on.
+
+## Features
+
+![Format YAML](images/showcase.gif)
 
 As a Kubernetes developer, aka YAML engineer, you deal with a lot of yaml files everyday. Take the k8s yaml for example:
 
@@ -37,10 +41,6 @@ It's useless. I have to keep the style manually every time editing yaml files, o
 It's tedious. So I create this extension to make life easier. Now you can control which way you prefer and everyone is happy.
 
 **Enjoy!**
-
-## Features
-
-![Format YAML](images/showcase.gif)
 
 ## Extension Settings
 

@@ -6,6 +6,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## 1.0.0 (30 Sep 2022)
 
-Hello, World!
+Hello, World from my hometown [Guilin](https://en.wikipedia.org/wiki/Guilin)!
 
 Initial release of the kubernetes style yaml formatter which allows you to customize the sequence indent style.

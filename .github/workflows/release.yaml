@@ -1,4 +1,4 @@
-name: release to visual studio code extension market place
+name: release to visual studio code extension marketplace
 
 on:
   push:
@@ -78,7 +78,7 @@ jobs:
         path: "*.vsix"
 
   release:
-    name: public vscode extension to market place
+    name: publish vscode extension to marketplace
     runs-on: ubuntu-latest
     needs: package
     if: success() && startsWith(github.ref, 'refs/tags/')
