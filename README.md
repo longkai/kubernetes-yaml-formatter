@@ -46,7 +46,8 @@ It's tedious. So I create this extension to make life easier. Now you can contro
 
 This extension contributes the following settings:
 
-* `kubernetes-yaml-formatter.compactSequenceIndent`: Enable/disable compact sequence indent, i.e. no indent.
+* `kubernetes-yaml-formatter.compactSequenceIndent`: Enable compact sequence indent, i.e. no indent (default `true`).
+* `kubernetes-yaml-formatter.includeDocumentStart`: Include `---` at document start (default `false`).
 
 It makes format yaml on save default to `true`, you can disable it:
 

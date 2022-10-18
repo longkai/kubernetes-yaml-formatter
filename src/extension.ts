@@ -21,6 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!affected) {
 			affected = ev.affectsConfiguration(`files.eol`);
 		}
+		if (!affected) {
+			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.includeDocumentStart`);
+		}
 
 		if (affected) {
 			console.log(`rewrite config file since something changed just now`);
@@ -72,6 +75,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 		languageId: `yaml`,
 	}).get(`editor.tabSize`, 2);
 	let conf = vscode.workspace.getConfiguration();
+	const includeDocumentStart = conf.get('kubernetes-yaml-formatter.includeDocumentStart', false);
 	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
 	let eof = "~";
 	switch (conf.get('files.eol')) {
@@ -92,6 +96,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
   line_ending: ${eof}
   retain_line_breaks: true
   compact_sequence_indent: ${compactSequenceIndent}
+  include_document_start: ${includeDocumentStart}
 `);
 	} catch (err) {
 		console.error(`write config: ${err}`);

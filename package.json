@@ -51,6 +51,11 @@
           "type": "boolean",
           "default": true,
           "description": "Use compact sequence indent, i.e. no indent"
+        },
+        "includeDocumentStart": {
+          "type": "boolean",
+          "default": false,
+          "description": "include --- at document start"
         }
       }
     },
