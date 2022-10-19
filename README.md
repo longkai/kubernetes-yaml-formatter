@@ -4,6 +4,8 @@ A [Visual Studio Code extension](https://marketplace.visualstudio.com/items?item
 
 You find the right format extension if you come from DevOps world, e.g., [Kubernetes](https://kubernetes.io/docs/concepts/), [Ansible Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html) or CI workflow like [Github Actions](https://docs.github.com/en/actions) and so on.
 
+**We all love Emojis, and yes, it has builtin support!**
+
 ## Features
 
 ![Format YAML](images/showcase.gif)
