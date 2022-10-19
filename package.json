@@ -45,17 +45,17 @@
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Use Compact Sequence Indent",
+      "title": "Kubernetes Style YAML Formatter",
       "properties": {
-        "compactSequenceIndent": {
+        "kubernetes-yaml-formatter.compactSequenceIndent": {
           "type": "boolean",
           "default": true,
           "description": "Use compact sequence indent, i.e. no indent"
         },
-        "includeDocumentStart": {
+        "kubernetes-yaml-formatter.includeDocumentStart": {
           "type": "boolean",
           "default": false,
-          "description": "include --- at document start"
+          "description": "Include --- at document start"
         }
       }
     },
