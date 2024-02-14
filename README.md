@@ -50,6 +50,7 @@ This extension contributes the following settings:
 
 * `kubernetes-yaml-formatter.compactSequenceIndent`: Enable compact sequence indent, i.e. no indent (default `true`).
 * `kubernetes-yaml-formatter.includeDocumentStart`: Include `---` at document start (default `false`).
+* `kubernetes-yaml-formatter.padLineComments`: Pad line comments (e.g., `key:  # padLineComments = 2`) by a constant spacing (default `1`).
 
 It makes format yaml on save default to `true`, you can disable it:
 

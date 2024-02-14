@@ -24,6 +24,9 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!affected) {
 			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.includeDocumentStart`);
 		}
+		if (!affected) {
+			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.padLineComments`);
+		}
 
 		if (affected) {
 			console.log(`rewrite config file since something changed just now`);
@@ -77,6 +80,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 	let conf = vscode.workspace.getConfiguration();
 	const includeDocumentStart = conf.get('kubernetes-yaml-formatter.includeDocumentStart', false);
 	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
+	const padLineComments = conf.get('kubernetes-yaml-formatter.padLineComments', 1);
 	let eof = "~";
 	switch (conf.get('files.eol')) {
 		case "\n":
@@ -97,6 +101,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
   retain_line_breaks: true
   compact_sequence_indent: ${compactSequenceIndent}
   include_document_start: ${includeDocumentStart}
+  pad_line_comments: ${padLineComments}
 `);
 	} catch (err) {
 		console.error(`write config: ${err}`);
