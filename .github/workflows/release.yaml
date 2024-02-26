@@ -5,13 +5,16 @@ on:
     tags:
     - "*"
   workflow_dispatch:
+  pull_request:
+    branches:
+    - main
 
 jobs:
   build:
     name: build yamlfmt binary
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout forked yamlfmt repo
+    - name: Checkout yamlfmt repo
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
