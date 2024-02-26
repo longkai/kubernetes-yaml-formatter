@@ -8,9 +8,6 @@ on:
   pull_request:
     branches:
     - main
-    paths:
-      - ! .github
-      - ! .gitignore
 
 jobs:
   build:
