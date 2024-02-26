@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Auto merge Github Actions",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"]
+    },
+    {
+      "description": "Auto merge container digests",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "pr",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["digest", "pin", "pinDigest"]
+    },
+    {
+      "description": "Auto merge kubernetes schemas",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "pr",
+      "ignoreTests": true,
+      "matchPackagePatterns": ["kubernetes-schemas"]
+    }
+  ]
+}
