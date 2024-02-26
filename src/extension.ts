@@ -18,12 +18,42 @@ export function activate(context: vscode.ExtensionContext) {
 	writeConfigFile(context);
 	vscode.workspace.onDidChangeConfiguration(ev => {
 		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.compactSequenceIndent`);
+    if (!affected) {
+      affected = ev.affectsConfiguration(`editor.tabSize`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.formatterType`);
+    }
 		if (!affected) {
 			affected = ev.affectsConfiguration(`files.eol`);
 		}
 		if (!affected) {
 			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.includeDocumentStart`);
 		}
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.retainLineBreaks`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.retainLineBreaksSingle`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.scanFoldedAsLiteral`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.indentlessArrays`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.disallowAnchors`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.maxLineLength`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.dropMergeTag`);
+    }
+    if (!affected) {
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.padLineComments`);
+    }
 
 		if (affected) {
 			console.log(`rewrite config file since something changed just now`);
@@ -75,6 +105,15 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 		languageId: `yaml`,
 	}).get(`editor.tabSize`, 2);
 	let conf = vscode.workspace.getConfiguration();
+  const formatterType = conf.get('kubernetes-yaml-formatter.formatterType', 'basic');
+  const retainLineBreaks = conf.get('kubernetes-yaml-formatter.retainLineBreaks', false);
+  const retainLineBreaksSingle = conf.get('kubernetes-yaml-formatter.retainLineBreaksSingle', false);
+  const scanFoldedAsLiteral = conf.get('kubernetes-yaml-formatter.scanFoldedAsLiteral', false);
+  const indentlessArrays = conf.get('kubernetes-yaml-formatter.indentlessArrays', false);
+  const disallowAnchors = conf.get('kubernetes-yaml-formatter.disallowAnchors', false);
+  const maxLineLength = conf.get('kubernetes-yaml-formatter.maxLineLength', 80);
+  const dropMergeTag = conf.get('kubernetes-yaml-formatter.dropMergeTag', false);
+  const padLineComments = conf.get('kubernetes-yaml-formatter.padLineComments', false);
 	const includeDocumentStart = conf.get('kubernetes-yaml-formatter.includeDocumentStart', false);
 	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
 	let eof = "~";
@@ -91,13 +130,21 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 	}
 	try {
 		fs.writeFileSync(file, `formatter:
-  type: basic
+  type: ${formatterType}
   indent: ${tabSize}
   line_ending: ${eof}
-  retain_line_breaks: true
-  compact_sequence_indent: ${compactSequenceIndent}
+  retain_line_breaks: ${retainLineBreaks}
+  retain_line_breaks_single: ${retainLineBreaksSingle}
+  scan_folded_as_literal: ${scanFoldedAsLiteral}
   include_document_start: ${includeDocumentStart}
+  indentless_arrays: ${indentlessArrays}
+  disallow_anchors: ${disallowAnchors}
+  max_line_length: ${maxLineLength}
+  drop_merge_tag: ${dropMergeTag}
+  pad_line_comments: ${padLineComments}
+
 `);
+    console.error(`write config file to ${file}`);
 	} catch (err) {
 		console.error(`write config: ${err}`);
 		vscode.window.showErrorMessage(`write config file: ${err}`);
