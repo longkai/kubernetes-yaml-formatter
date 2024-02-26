@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "kubernetes-yaml-formatter" extension will be documented in this file.
+All notable changes to the "kubernetes-yaml-formatter-x" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
@@ -9,7 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 This release is brought you from my work place, [Shenzhen](https://en.wikipedia.org/wiki/Shenzhen).
 
 - Add builtin Emoji support!
-- Add a new setting `kubernetes-yaml-formatter.includeDocumentStart` to include `---` at document start(default `false`).
+- Add a new setting `kubernetes-yaml-formatter-x.includeDocumentStart` to include `---` at document start(default `false`).
 
 ## 1.0.0 (30 Sep 2022)
 

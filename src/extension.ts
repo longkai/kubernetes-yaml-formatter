@@ -13,46 +13,46 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log(`Congratulations, your extension "kubernetes-yaml-formatter" is now active!`);
+	console.log(`Congratulations, your extension "kubernetes-yaml-formatter-x" is now active!`);
 
 	writeConfigFile(context);
 	vscode.workspace.onDidChangeConfiguration(ev => {
-		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.compactSequenceIndent`);
+		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.compactSequenceIndent`);
     if (!affected) {
       affected = ev.affectsConfiguration(`editor.tabSize`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.formatterType`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.formatterType`);
     }
 		if (!affected) {
 			affected = ev.affectsConfiguration(`files.eol`);
 		}
 		if (!affected) {
-			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.includeDocumentStart`);
+			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.includeDocumentStart`);
 		}
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.retainLineBreaks`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.retainLineBreaks`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.retainLineBreaksSingle`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.retainLineBreaksSingle`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.scanFoldedAsLiteral`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.scanFoldedAsLiteral`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.indentlessArrays`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.indentlessArrays`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.disallowAnchors`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.disallowAnchors`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.maxLineLength`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.maxLineLength`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.dropMergeTag`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.dropMergeTag`);
     }
     if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.padLineComments`);
+      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.padLineComments`);
     }
 
 		if (affected) {
@@ -105,17 +105,17 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 		languageId: `yaml`,
 	}).get(`editor.tabSize`, 2);
 	let conf = vscode.workspace.getConfiguration();
-  const formatterType = conf.get('kubernetes-yaml-formatter.formatterType', 'basic');
-  const retainLineBreaks = conf.get('kubernetes-yaml-formatter.retainLineBreaks', false);
-  const retainLineBreaksSingle = conf.get('kubernetes-yaml-formatter.retainLineBreaksSingle', false);
-  const scanFoldedAsLiteral = conf.get('kubernetes-yaml-formatter.scanFoldedAsLiteral', false);
-  const indentlessArrays = conf.get('kubernetes-yaml-formatter.indentlessArrays', false);
-  const disallowAnchors = conf.get('kubernetes-yaml-formatter.disallowAnchors', false);
-  const maxLineLength = conf.get('kubernetes-yaml-formatter.maxLineLength', 80);
-  const dropMergeTag = conf.get('kubernetes-yaml-formatter.dropMergeTag', false);
-  const padLineComments = conf.get('kubernetes-yaml-formatter.padLineComments', false);
-	const includeDocumentStart = conf.get('kubernetes-yaml-formatter.includeDocumentStart', false);
-	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
+  const formatterType = conf.get('kubernetes-yaml-formatter-x.formatterType', 'basic');
+  const retainLineBreaks = conf.get('kubernetes-yaml-formatter-x.retainLineBreaks', false);
+  const retainLineBreaksSingle = conf.get('kubernetes-yaml-formatter-x.retainLineBreaksSingle', false);
+  const scanFoldedAsLiteral = conf.get('kubernetes-yaml-formatter-x.scanFoldedAsLiteral', false);
+  const indentlessArrays = conf.get('kubernetes-yaml-formatter-x.indentlessArrays', false);
+  const disallowAnchors = conf.get('kubernetes-yaml-formatter-x.disallowAnchors', false);
+  const maxLineLength = conf.get('kubernetes-yaml-formatter-x.maxLineLength', 80);
+  const dropMergeTag = conf.get('kubernetes-yaml-formatter-x.dropMergeTag', false);
+  const padLineComments = conf.get('kubernetes-yaml-formatter-x.padLineComments', false);
+	const includeDocumentStart = conf.get('kubernetes-yaml-formatter-x.includeDocumentStart', false);
+	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter-x.compactSequenceIndent', true);
 	let eof = "~";
 	switch (conf.get('files.eol')) {
 		case "\n":

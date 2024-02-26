@@ -1,12 +1,12 @@
 {
-  "name": "kubernetes-yaml-formatter",
+  "name": "kubernetes-yaml-formatter-x",
   "displayName": "Kubernetes YAML Formatter",
   "icon": "images/icon.png",
   "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
   "version": "1.2.0",
   "publisher": "kiliantyler",
   "repository": {
-    "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter.git",
+    "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter-x.git",
     "type": "git"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
@@ -31,7 +31,7 @@
     "Workflow"
   ],
   "bugs": {
-    "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter/issues"
+    "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter-x/issues"
   },
   "categories": [
     "Formatters"
@@ -47,52 +47,52 @@
     "configuration": {
       "title": "Kubernetes Style YAML Formatter",
       "properties": {
-        "kubernetes-yaml-formatter.formatType": {
+        "kubernetes-yaml-formatter-x.formatType": {
           "type": "string",
           "default": "basic",
           "description": "The type of formatting to use. 'basic' is the default, there is only basic currently."
         },
-        "kubernetes-yaml-formatter.retainLineBreaks": {
+        "kubernetes-yaml-formatter-x.retainLineBreaks": {
           "type": "boolean",
           "default": false,
           "description": "Retain line breaks in formatted yaml"
         },
-        "kubernetes-yaml-formatter.retainLineBreaksSingle": {
+        "kubernetes-yaml-formatter-x.retainLineBreaksSingle": {
           "type": "boolean",
           "default": false,
           "description": "(NOTE: Takes precedence over retain_line_breaks) Retain line breaks in formatted yaml, but only keep a single line in groups of many blank lines."
         },
-        "kubernetes-yaml-formatter.scanFoldedAsLiteral": {
+        "kubernetes-yaml-formatter-x.scanFoldedAsLiteral": {
           "type": "boolean",
           "default": false,
           "description": "Option that will preserve newlines in folded block scalars (blocks that start with >)."
         },
-        "kubernetes-yaml-formatter.indentlessArrays": {
+        "kubernetes-yaml-formatter-x.indentlessArrays": {
           "type": "boolean",
           "default": false,
           "description": "Render - array items (block sequence items) without an increased indent."
         },
-        "kubernetes-yaml-formatter.disallowAnchors": {
+        "kubernetes-yaml-formatter-x.disallowAnchors": {
           "type": "boolean",
           "default": false,
           "description": "If true, reject any YAML anchors or aliases found in the document."
         },
-        "kubernetes-yaml-formatter.maxLineLength": {
+        "kubernetes-yaml-formatter-x.maxLineLength": {
           "type": "number",
           "default": 0,
           "description": "Set the maximum line length. If not set, defaults to 0 which means no limit."
         },
-        "kubernetes-yaml-formatter.dropMergeTags": {
+        "kubernetes-yaml-formatter-x.dropMergeTags": {
           "type": "boolean",
           "default": false,
           "description": "Assume that any well formed merge using just a << token will be a merge, and drop the !!merge tag from the formatted result."
         },
-        "kubernetes-yaml-formatter.padLineComments": {
+        "kubernetes-yaml-formatter-x.padLineComments": {
           "type": "number",
           "default": 1,
           "description": "The number of padding spaces to insert before line comments."
         },
-        "kubernetes-yaml-formatter.includeDocumentStart": {
+        "kubernetes-yaml-formatter-x.includeDocumentStart": {
           "type": "boolean",
           "default": false,
           "description": "Include the document start marker (---) at the beginning of the document."
@@ -101,7 +101,7 @@
     },
     "configurationDefaults": {
       "[yaml]": {
-        "editor.defaultFormatter": "kiliantyler.kubernetes-yaml-formatter",
+        "editor.defaultFormatter": "kiliantyler.kubernetes-yaml-formatter-x",
         "editor.formatOnSave": true
       }
     }
