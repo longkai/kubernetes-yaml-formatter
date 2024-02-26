@@ -3,7 +3,7 @@
   "displayName": "Kubernetes YAML Formatter X",
   "icon": "images/icon.png",
   "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "kiliantyler",
   "repository": {
     "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter-x.git",
@@ -112,19 +112,19 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "vscode-test"
   },
   "devDependencies": {
     "@types/vscode": "^1.61.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-cli": "^0.0.6",
+    "@vscode/test-electron": "^2.3.9",
     "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "eslint": "^8.20.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "glob": "^8.0.3"
   }
 }
