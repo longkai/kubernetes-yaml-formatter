@@ -129,8 +129,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-.vscode/
-
 bin/
 
 .DS_STORE
