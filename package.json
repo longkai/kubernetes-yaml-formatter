@@ -1,6 +1,6 @@
 {
   "name": "kubernetes-yaml-formatter-x",
-  "displayName": "Kubernetes YAML Formatter",
+  "displayName": "Kubernetes YAML Formatter X",
   "icon": "images/icon.png",
   "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
   "version": "1.2.0",
