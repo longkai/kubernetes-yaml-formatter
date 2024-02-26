@@ -16,7 +16,7 @@ jobs:
       with:
         fetch-depth: 0
         repository: google/yamlfmt
-        ref: vscode
+        ref: v0.11.0
     - name: setup golang
       uses: actions/setup-go@v3
       with:
