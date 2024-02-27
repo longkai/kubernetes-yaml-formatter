@@ -10,55 +10,20 @@ import { platform } from 'node:process';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	// Set context as a global as some tests depend on it
+  (global as any).testExtensionContext = context;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
+  // Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log(`Congratulations, your extension "kubernetes-yaml-formatter-x" is now active!`);
-
+  
 	writeConfigFile(context);
 	vscode.workspace.onDidChangeConfiguration(ev => {
-		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.compactSequenceIndent`);
-    if (!affected) {
-      affected = ev.affectsConfiguration(`editor.tabSize`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.formatterType`);
-    }
-		if (!affected) {
-			affected = ev.affectsConfiguration(`files.eol`);
-		}
-		if (!affected) {
-			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.includeDocumentStart`);
-		}
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.retainLineBreaks`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.retainLineBreaksSingle`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.scanFoldedAsLiteral`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.indentlessArrays`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.disallowAnchors`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.maxLineLength`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.dropMergeTag`);
-    }
-    if (!affected) {
-      affected = ev.affectsConfiguration(`kubernetes-yaml-formatter-x.padLineComments`);
-    }
-
-		if (affected) {
-			console.log(`rewrite config file since something changed just now`);
-			writeConfigFile(context);
-		}
+      if (ev.affectsConfiguration('kubernetes-yaml-formatter-x')) {
+        console.log(`rewrite config file since something changed just now`);
+        writeConfigFile(context);
+        return;
+      }
 	});
 
 	// 👍 formatter implemented using API
@@ -147,12 +112,13 @@ function writeConfigFile(context: vscode.ExtensionContext) {
     console.error(`write config file to ${file}`);
 	} catch (err) {
 		console.error(`write config: ${err}`);
-		vscode.window.showErrorMessage(`write config file: ${err}`);
+		vscode.window.showErrorMessage(`Write config file: ${err}`);
 	}
 }
 
-function configFileLocation(context: vscode.ExtensionContext): string | undefined {
+export function configFileLocation(context: vscode.ExtensionContext): string | undefined {
 	let fsPath = context.storageUri?.fsPath;
+  console.error(`fsPath: ${fsPath}`);
 	if (!fsPath) {
 		try {
 			fsPath = path.join(os.tmpdir(), context.extension.id);
@@ -175,4 +141,15 @@ function configFileLocation(context: vscode.ExtensionContext): string | undefine
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate(context: vscode.ExtensionContext) {
+  const file = configFileLocation(context);
+  if (file) {
+    try {
+      fs.unlinkSync(file);
+    } catch (err) {
+      console.error(`unlink ${file}: ${err}`);
+    }
+  } else {
+    console.error(`Cannot get extension storage uri path`);
+  }
+}

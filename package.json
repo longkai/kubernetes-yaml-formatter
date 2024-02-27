@@ -2,7 +2,7 @@
   "name": "kubernetes-yaml-formatter-x",
   "displayName": "Kubernetes YAML Formatter X",
   "icon": "images/icon.png",
-  "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
+  "description": "An even better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
   "version": "1.2.1",
   "publisher": "kiliantyler",
   "repository": {
@@ -45,7 +45,7 @@
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Kubernetes Style YAML Formatter",
+      "title": "Kubernetes YAML Formatter X",
       "properties": {
         "kubernetes-yaml-formatter-x.formatType": {
           "type": "string",

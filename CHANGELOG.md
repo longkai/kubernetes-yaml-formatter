@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## 1.2.1 (26 Feb 2024)
 
-Updating underlaying packages and adding testing
+Updating underlaying packages and skeleton unit tests
 
 ## 1.2.0 (26 Feb 2024)
 
