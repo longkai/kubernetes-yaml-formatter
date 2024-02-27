@@ -4,6 +4,15 @@ All notable changes to the "kubernetes-yaml-formatter-x" extension will be docum
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.3.0 (26 Feb 2024)
+
+Added option to use global config instead of extension config.
+The global config lives in `$HOME/.config/yamlfmt/.yamlfmt`
+
+This is equivilent to passing in `-global_conf` on the command line
+
+In depth instructions can be found in the [yamlfmt documentation](https://github.com/google/yamlfmt/blob/main/docs/config-file.md)
+
 ## 1.2.1 (26 Feb 2024)
 
 Updating underlaying packages and skeleton unit tests
