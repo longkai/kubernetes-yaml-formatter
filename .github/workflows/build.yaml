@@ -1,0 +1,43 @@
+name: Build yamlfmt from source
+
+on:
+  workflow_call:
+
+env:
+  go: 1.18
+  yamlfmt: v0.11.0
+  yamlfmt_repo: google/yamlfmt
+
+jobs:
+  build:
+    name: Build yamlfmt binary
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout yamlfmt repo
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      with:
+        fetch-depth: 0
+        repository: ${{ env.yamlfmt_repo }}
+        ref: ${{ env.yamlfmt }}
+
+    - name: Setup golang
+      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5
+      with:
+        go-version: ${{ env.go }}
+        check-latest: true
+
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@7ec5c2b0c6cdda6e8bbb49444bc797dd33d74dd8 # v5
+      with:
+        distribution: goreleaser
+        version: latest
+        args: --snapshot --rm-dist
+    
+    - name: Cleanup
+      run: rm -rf *.tar.gz
+
+    - name: Upload yamlfmt binaries
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+      with:
+        name: binaries
+        path: "dist/yamlfmt_*"

@@ -1,0 +1,54 @@
+name: Build yamlfmt from source
+
+on:
+  workflow_call:
+
+env:
+  node_version: 20
+
+jobs:
+  package:
+    name: Package vscode extension
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@87c55149d96e628cc2ef7e6fc2aab372015aec85 # v4
+      with:
+        name: binaries
+        path: /tmp
+
+    - name: Checkout extension repo
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup nodejs
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+      with:
+        node-version: ${{ env.node_version }}
+      
+    - name: Npm install
+      run: npm install
+
+    - name: Package multi-platforms
+      shell: bash
+      run: |
+        declare -A map
+        map["win32-x64"]=windows_amd64_v1
+        map["win32-arm64"]=windows_arm64
+        map["linux-x64"]=linux_amd64_v1
+        map["linux-arm64"]=linux_arm64
+        map["darwin-x64"]=darwin_amd64_v1
+        map["darwin-arm64"]=darwin_arm64
+
+        for arch in ${!map[*]}; do
+          rm -rf bin/
+          mv "/tmp/yamlfmt_${map[$arch]}" bin/
+          chmod +x -R bin/
+          npx vsce package --target $arch
+        done
+
+    - name: Upload artifacts (vsix files)
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+      with:
+        name: packages
+        path: "*.vsix"
