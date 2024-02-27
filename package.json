@@ -3,7 +3,7 @@
   "displayName": "Kubernetes YAML Formatter X",
   "icon": "images/icon.png",
   "description": "An even better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "publisher": "kiliantyler",
   "repository": {
     "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter-x.git",
@@ -47,9 +47,20 @@
     "configuration": {
       "title": "Kubernetes YAML Formatter X",
       "properties": {
+        "kubernetes-yaml-formatter-x.config.useGlobalConfig": {
+          "type": "boolean",
+          "default": "false",
+          "description": "This will override all other settings (not including Workspace Config) and use the global configuration if it exists in the user's home directory."
+        },
         "kubernetes-yaml-formatter-x.formatType": {
           "type": "string",
           "default": "basic",
+          "enum": [
+            "basic"
+          ],
+          "enumDescriptions": [
+            "The basic formatter is the default and only option currently."
+          ],
           "description": "The type of formatting to use. 'basic' is the default, there is only basic currently."
         },
         "kubernetes-yaml-formatter-x.retainLineBreaks": {

@@ -1,5 +1,3 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -7,17 +5,17 @@ import * as path from 'path';
 import * as process from 'child_process';
 import { platform } from 'node:process';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+
 	// Set context as a global as some tests depend on it
   (global as any).testExtensionContext = context;
 
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log(`Congratulations, your extension "kubernetes-yaml-formatter-x" is now active!`);
+	console.log(`Kubernetes Yaml Formatter X is now active!`);
 
+  // Write the config file when the extension is activated
 	writeConfigFile(context);
+
+  // Watch for changes to the configuration file
 	vscode.workspace.onDidChangeConfiguration(ev => {
       if (ev.affectsConfiguration('kubernetes-yaml-formatter-x')) {
         console.log(`rewrite config file since something changed just now`);
@@ -26,29 +24,41 @@ export function activate(context: vscode.ExtensionContext) {
       }
 	});
 
-	// 👍 formatter implemented using API
 	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
 		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
 			const txt = document.getText();
-			let args = [`-in`];
-			const confFile = configFileLocation(context);
-			if (confFile) {
-				args.push(`-conf`);
-				args.push(confFile);
-			}
+      // Default to using the global config
+      let args = [`-global_conf`];
+
+      // Check if the user has opted to use the local config
+      let conf = vscode.workspace.getConfiguration();
+      if (conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfig', false)) {
+        args = [`-in`];
+        const confFile = configFileLocation(context);
+        if (confFile) {
+          args.push(`-conf`);
+          args.push(confFile);
+        }
+      }
+
 			// __dirname is `out`, so go back one level
 			let cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
 			if (platform === 'win32') {
 				cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
 			}
+
+      // Run the formatter and return the result
 			const sp = process.spawnSync(cmd, args, {
 				input: txt,
 			});
+
+      // If the formatter fails, log the error and return an empty array
 			if (sp.status !== 0) {
 				console.error(`format ${txt} fail: ${sp.stderr.toString()}`);
 				return [];
 			}
 
+      // Paste the formatted text into the document
 			const edits = vscode.TextEdit.replace(
 				new vscode.Range(
 					new vscode.Position(0, 0),
@@ -60,15 +70,23 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 }
 
+// Write the configuration file
 function writeConfigFile(context: vscode.ExtensionContext) {
+  // Get the path to the config file
 	const file = configFileLocation(context);
+
+  // If the file path is not defined, log an error and return
 	if (!file) {
 		console.error(`cannot get extension storage uri path`);
 		return;
 	}
+
+  // Get the tab size from the user's settings
 	const tabSize = vscode.workspace.getConfiguration("", {
 		languageId: `yaml`,
 	}).get(`editor.tabSize`, 2);
+
+  // Read the user's settings and write them to the config file
 	let conf = vscode.workspace.getConfiguration();
   const formatterType = conf.get('kubernetes-yaml-formatter-x.formatterType', 'basic');
   const retainLineBreaks = conf.get('kubernetes-yaml-formatter-x.retainLineBreaks', false);
@@ -80,7 +98,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
   const dropMergeTag = conf.get('kubernetes-yaml-formatter-x.dropMergeTag', false);
   const padLineComments = conf.get('kubernetes-yaml-formatter-x.padLineComments', false);
 	const includeDocumentStart = conf.get('kubernetes-yaml-formatter-x.includeDocumentStart', false);
-	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter-x.compactSequenceIndent', true);
+  // Get the EOL character from the user's settings
 	let eof = "~";
 	switch (conf.get('files.eol')) {
 		case "\n":
@@ -94,7 +112,9 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 			break;
 	}
 	try {
-		fs.writeFileSync(file, `formatter:
+    // Write the config file
+		fs.writeFileSync(file,
+`formatter:
   type: ${formatterType}
   indent: ${tabSize}
   line_ending: ${eof}
@@ -109,20 +129,23 @@ function writeConfigFile(context: vscode.ExtensionContext) {
   pad_line_comments: ${padLineComments}
 
 `);
-    console.error(`write config file to ${file}`);
+    console.error(`Wrote config file to ${file}`);
 	} catch (err) {
 		console.error(`write config: ${err}`);
 		vscode.window.showErrorMessage(`Write config file: ${err}`);
 	}
 }
 
-export function configFileLocation(context: vscode.ExtensionContext): string | undefined {
+// Get the path to the configuration file
+function configFileLocation(context: vscode.ExtensionContext): string | undefined {
 	let fsPath = context.storageUri?.fsPath;
-  console.error(`fsPath: ${fsPath}`);
+  // If the path is not defined, use the system temp directory
 	if (!fsPath) {
 		try {
+      // Create a temporary directory for the extension
 			fsPath = path.join(os.tmpdir(), context.extension.id);
 			if (!fs.existsSync(fsPath)) {
+        // Create the directory if it doesn't exist
 				fs.mkdirSync(fsPath);
 			}
 		} catch (err) {
@@ -137,11 +160,13 @@ export function configFileLocation(context: vscode.ExtensionContext): string | u
 		console.error(`mkdir ${fsPath}: ${err}`);
 		vscode.window.showErrorMessage(`mkdir extension storage uri path ${fsPath}: ${err}`);
 	}
+  // Return the path to the config file
 	return path.join(fsPath, "config.yaml");
 }
 
 // this method is called when your extension is deactivated
 export function deactivate(context: vscode.ExtensionContext) {
+  // Remove the config file when the extension is deactivated
   const file = configFileLocation(context);
   if (file) {
     try {
