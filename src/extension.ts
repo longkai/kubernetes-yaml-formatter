@@ -23,22 +23,25 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 	});
-
+  console.log(`registered onDidChangeConfiguration`);
 	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
 		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+      console.log(`formatting ${document.fileName}`);
 			const txt = document.getText();
-      // Default to using the global config
-      let args = [`-global_conf`];
-
+      let args = [`-in`];
       // Check if the user has opted to use the local config
       let conf = vscode.workspace.getConfiguration();
-      if (conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfig', false)) {
-        args = [`-in`];
+      if (conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfig')) {
+        console.log(`Using global config file`);
+        args.push(`-global_conf`);
+      } else {
+        console.log(`Using extension config`);
         const confFile = configFileLocation(context);
         if (confFile) {
           args.push(`-conf`);
           args.push(confFile);
         }
+        console.log(`using local config: ${confFile}`);
       }
 
 			// __dirname is `out`, so go back one level
@@ -46,7 +49,8 @@ export function activate(context: vscode.ExtensionContext) {
 			if (platform === 'win32') {
 				cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
 			}
-
+      console.log(`using cmd: ${cmd}`);
+      console.log(`using args: ${args}`);
       // Run the formatter and return the result
 			const sp = process.spawnSync(cmd, args, {
 				input: txt,
@@ -130,6 +134,7 @@ function writeConfigFile(context: vscode.ExtensionContext) {
 
 `);
     console.error(`Wrote config file to ${file}`);
+    (global as any).configFileLocation = file;
 	} catch (err) {
 		console.error(`write config: ${err}`);
 		vscode.window.showErrorMessage(`Write config file: ${err}`);
@@ -167,7 +172,7 @@ function configFileLocation(context: vscode.ExtensionContext): string | undefine
 // this method is called when your extension is deactivated
 export function deactivate(context: vscode.ExtensionContext) {
   // Remove the config file when the extension is deactivated
-  const file = configFileLocation(context);
+  let file = (global as any).configFileLocation;
   if (file) {
     try {
       fs.unlinkSync(file);
