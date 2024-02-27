@@ -1,4 +1,4 @@
-name: Build yamlfmt from source
+name: Package vscode extension
 
 on:
   workflow_call:
