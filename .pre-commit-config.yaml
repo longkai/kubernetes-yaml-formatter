@@ -1,0 +1,37 @@
+fail_fast: false
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: check-vcs-permalinks
+  - id: destroyed-symlinks
+  - id: detect-private-key
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+    args: [--fix=lf]
+  - id: trailing-whitespace
+
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v3.1.0
+  hooks:
+  - id: conventional-pre-commit
+    stages: [commit-msg]
+    args: []
+
+- repo: https://github.com/adrienverge/yamllint.git
+  rev: v1.35.1
+  hooks:
+  - id: yamllint
+    args: [-c=.yamllint]
+
+# - repo: https://github.com/pre-commit/mirrors-eslint
+#   rev: 'v9.0.0-beta.1'
+#   hooks:
+#   - id: eslint
+#     files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+#     types: [file]

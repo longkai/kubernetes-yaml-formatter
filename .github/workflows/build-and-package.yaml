@@ -3,10 +3,10 @@ name: Build and Package vscode extension
 on:
   pull_request:
     branches:
-      - main
+    - main
   push:
     branches:
-      - main
+    - main
   workflow_dispatch:
 
 

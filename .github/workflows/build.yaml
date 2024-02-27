@@ -32,7 +32,7 @@ jobs:
         distribution: goreleaser
         version: latest
         args: --snapshot --rm-dist
-    
+
     - name: Cleanup
       run: rm -rf *.tar.gz
 

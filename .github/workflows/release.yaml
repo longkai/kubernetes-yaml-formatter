@@ -20,7 +20,7 @@ jobs:
       uses: actions/download-artifact@87c55149d96e628cc2ef7e6fc2aab372015aec85 # v4
       with:
         name: packages
-    
+
     - name: Publish to VS Code Marketplace
       run: npx vsce publish --packagePath $(find . -iname '*.vsix')
       env:

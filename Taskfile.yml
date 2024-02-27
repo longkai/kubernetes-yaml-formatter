@@ -1,0 +1,10 @@
+version: "3"
+
+includes:
+  precommit: .taskfiles/PrecommitTasks.yml
+
+tasks:
+  default:
+    silent: true
+    cmds:
+    - task -l
