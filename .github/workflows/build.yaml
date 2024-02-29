@@ -3,9 +3,10 @@ name: Build yamlfmt from source
 on:
   workflow_call:
 
+# These should be moved to a more manageble format, ex: a file in the repository that renovate can manage
 env:
   go: 1.18
-  yamlfmt: v0.11.0
+  yamlfmt: main # This should be moved to the next release tag when it is available, there is a bug in v0.11.0 that prevents it from working with the extension
   yamlfmt_repo: google/yamlfmt
 
 jobs:
