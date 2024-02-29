@@ -72,6 +72,16 @@ export function activate(context: vscode.ExtensionContext) {
 				return [];
 			}
 
+      if (sp.stderr.toString() !== '') {
+        console.error(`format ${txt} stderr: ${sp.stderr.toString()}`);
+        return [];
+      }
+
+      if (sp.stdout.toString() === '') {
+        console.log(`yamlfmt's stdout buffer is empty`);
+        return [];
+      }
+
       // Paste the formatted text into the document
 			const edits = vscode.TextEdit.replace(
 				new vscode.Range(
