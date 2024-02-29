@@ -34,13 +34,9 @@ spec:
         - containerPort: 80
 ```
 
-As you see, the sequence style(`containers` and `ports`) in the k8s style yaml has no indent. Each time you play with [kubectl](https://kubernetes.io/docs/reference/kubectl/), there is no indent. Not to mention some tool like [kustomize](https://github.com/kubernetes-sigs/kustomize) [requires you do that](https://github.com/kubernetes-sigs/kustomize/issues/3946).
+As you see, the sequence style(`containers` and `ports`) in the k8s style yaml has no indent. Each time you play with [kubectl](https://kubernetes.io/docs/reference/kubectl/), there is no indent. The [official YAML Spec](https://yaml.org/spec/1.2.2/#chapter-4-syntax-conventions) also does not include indenting arrays.
 
 Unluckily, the builtin yaml format has its own [option philosophy](https://prettier.io/docs/en/option-philosophy.html). It always does indent and [resists to accept](https://github.com/prettier/prettier/issues/12385) such a customization setting.
-
-It's useless. I have to keep the style manually every time editing yaml files, or you will end up with a non-idiomatic one.
-
-It's tedious. So I create this extension to make life easier. Now you can control which way you prefer and everyone is happy.
 
 **Enjoy!**
 
@@ -48,6 +44,10 @@ It's tedious. So I create this extension to make life easier. Now you can contro
 
 This extension contributes the following settings:
 
+* `kubernetes-yaml-formatter-x.config`
+  * `kubernetes-yaml-formatter-x.config.useGlobalConfig`: This will override all other settings (not including Workspace Config) and use the global configuration if it exists in the user's home directory. (default: `false`)
+  * `kubernetes-yaml-formatter-x.config.useWorkspaceConfig`: This will override all other settings (including Global config) and use the workspace configuration if it exists. (default: `true`)
+  * `kubernetes-yaml-formatter-x.config.useGlobalConfigOverWorkspace`: This will force the global config to be used even if there is a workspace config. (default: `false`)
 * `kubernetes-yaml-formatter-x.formatType`: The type of formatting to use. 'basic' is the default, there is only basic currently. (default: `basic`)
 * `kubernetes-yaml-formatter-x.retainLineBreaks`: Retain line breaks in formatted yaml (default: `false`)
 * `kubernetes-yaml-formatter-x.retainLineBreaksSingle`: (NOTE: Takes precedence over retain_line_breaks) Retain line breaks in formatted yaml, but only keep a single line in groups of many blank lines. (default: `false`)
@@ -67,9 +67,25 @@ It makes format yaml on save default to `true`, you can disable it:
 }
 ```
 
+## Config Precidence
+
+```
+1. Workspace config
+  a. .yamlfmt
+  b. yamlfmt.yaml
+  c. yamlfmt.yml
+2. Global Config
+  a. ${HOME}/.config/yamlfmt/.yamlfmt
+  b. ${HOME}/.config/yamlfmt/yamlfmt.yaml
+  c. ${HOME}/.config/yamlfmt/yamlfmt.yml
+3. Extension configured settings
+```
+(1 & 2 will be flipped if `useGlobalConfigOverWorkspace` is enabled)
+
 ## Thanks
 
 Thanks [lupengpeng](https://github.com/iamlupeng1991) for the icon design.
+
 Thanks to [Longkai's Original Extension](https://github.com/longkai/kubernetes-yaml-formatter)
 
 Thanks the following projects:

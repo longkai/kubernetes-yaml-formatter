@@ -4,6 +4,16 @@ All notable changes to the "kubernetes-yaml-formatter-x" extension will be docum
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.4.0 (29 Feb 2024)
+
+Hello from a day that doesn't exist!
+
+This release adds the ability to use a local workspace config. So now all of your projects can have their own custom .yamlfmt (or yamlfmt.yaml or yamlfmt.yml) files in them!
+
+There is also a toggle for which should take precidence global or workspace configs. Default is workspace, so that you can have global config enabled for any project that _doesn't_ have a workspace config, but it will use the workspace config if it does exist.
+
+If you (for some reason) want to not listen to the project maintainer and lint things your own way, you can disable this setting and use your global config no matter what.
+
 ## 1.3.0 (26 Feb 2024)
 
 Added option to use global config instead of extension config.
