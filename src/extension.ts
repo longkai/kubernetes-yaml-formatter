@@ -4,6 +4,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as process from 'child_process';
 import { platform } from 'node:process';
+import { get } from 'http';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -23,34 +24,43 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 	});
-  console.log(`registered onDidChangeConfiguration`);
+
+  console.debug(`registered onDidChangeConfiguration`);
+
 	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
 		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-      console.log(`formatting ${document.fileName}`);
+      console.debug(`formatting ${document.fileName}`);
+
 			const txt = document.getText();
       let args = [`-in`];
       // Check if the user has opted to use the local config
       let conf = vscode.workspace.getConfiguration();
-      if (conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfig')) {
-        console.log(`Using global config file`);
+      var localConfig = conf.get('kubernetes-yaml-formatter-x.config.useWorkspaceConfig') ? getWorkspaceConfig(document.uri) : undefined;
+      var globalConfig = conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfig') ? getGlobalConfig(context) : undefined;
+      let useGlobalConfigOverWorkspace = conf.get('kubernetes-yaml-formatter-x.config.useGlobalConfigOverWorkspace');
+      if (useGlobalConfigOverWorkspace && globalConfig) {
+        console.debug(`Global config is preferred over workspace config`);
+        console.debug(`Using global config file: ${globalConfig}`);
+        args.push(`-global_conf`);
+      } else if (localConfig) {
+        console.debug(`using local config: ${localConfig}`);
+        args.push(`-conf`);
+        args.push(localConfig);
+      } else if (globalConfig) {
+        console.debug(`Using global config file: ${globalConfig}`);
         args.push(`-global_conf`);
       } else {
-        console.log(`Using extension config`);
+        console.debug(`Using extension config`);
         const confFile = configFileLocation(context);
         if (confFile) {
           args.push(`-conf`);
           args.push(confFile);
         }
-        console.log(`using local config: ${confFile}`);
+        console.debug(`using local config: ${confFile}`);
       }
-
-			// __dirname is `out`, so go back one level
-			let cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
-			if (platform === 'win32') {
-				cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
-			}
-      console.log(`using cmd: ${cmd}`);
-      console.log(`using args: ${args}`);
+      let cmd = getCmd();
+      console.debug(`using cmd: ${cmd}`);
+      console.debug(`using args: ${args}`);
       // Run the formatter and return the result
 			const sp = process.spawnSync(cmd, args, {
 				input: txt,
@@ -167,6 +177,59 @@ function configFileLocation(context: vscode.ExtensionContext): string | undefine
 	}
   // Return the path to the config file
 	return path.join(fsPath, "config.yaml");
+}
+
+function getWorkspaceConfig(uri: vscode.Uri): string | undefined {
+  const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+  if (!workspaceFolder) {
+    console.info(`No workspace folder for ${uri}`);
+    return;
+  }
+  // search for the config file in the workspace
+  let cmd = getCmd();
+  const sp = process.spawnSync(cmd, ['-debug', 'config', '-quiet'], {
+    cwd: workspaceFolder.uri.fsPath
+  });
+  if (sp.error) {
+    console.error(`workspace config: ${sp.error}`);
+    return;
+  }
+  for (let line of sp.stdout.toString().split('\n')) {
+    if (line.includes('Found config at')) {
+      let file = line.substring(25);
+      console.debug(`workspace config file: ${file}`);
+      return file;
+    }
+  }
+  console.log(`No workspace config found`);
+  return;
+}
+
+function getGlobalConfig(context: vscode.ExtensionContext): string | undefined{
+  let cmd = getCmd();
+  const sp = process.spawnSync(cmd, ['-global_conf', '-debug', 'config']);
+  if (sp.error) {
+    console.error(`global config: ${sp.error}`);
+    return;
+  }
+  for (let line of sp.stdout.toString().split('\n')) {
+    if (line.includes('Found config at')) {
+      let file = line.substring(25);
+      console.debug(`global config file: ${file}`);
+      return file;
+    }
+  }
+  console.log(`No global config found`);
+  return;
+}
+
+function getCmd(): string {
+  // __dirname is `out`, so go back one level
+  let cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
+  if (platform === 'win32') {
+    cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
+  }
+  return cmd;
 }
 
 // this method is called when your extension is deactivated

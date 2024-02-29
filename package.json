@@ -3,7 +3,7 @@
   "displayName": "Kubernetes YAML Formatter X",
   "icon": "images/icon.png",
   "description": "An even better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "kiliantyler",
   "repository": {
     "url": "https://github.com/kiliantyler/kubernetes-yaml-formatter-x.git",
@@ -51,6 +51,16 @@
           "type": "boolean",
           "default": "false",
           "description": "This will override all other settings (not including Workspace Config) and use the global configuration if it exists in the user's home directory."
+        },
+        "kubernetes-yaml-formatter-x.config.useWorkspaceConfig": {
+          "type": "boolean",
+          "default": "true",
+          "description": "This will override all other settings (including Global config) and use the workspace configuration if it exists."
+        },
+        "kubernetes-yaml-formatter-x.config.useGlobalConfigOverWorkspace": {
+          "type": "boolean",
+          "default": "false",
+          "description": "This will force the global config to be used even if there is a workspace config."
         },
         "kubernetes-yaml-formatter-x.formatType": {
           "type": "string",
