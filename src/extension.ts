@@ -1,11 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
-import * as process from 'child_process';
-import { platform } from 'node:process';
+import * as YAML from "yaml";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,116 +11,52 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log(`Congratulations, your extension "kubernetes-yaml-formatter" is now active!`);
 
-	writeConfigFile(context);
 	vscode.workspace.onDidChangeConfiguration(ev => {
-		let affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.compactSequenceIndent`);
-		if (!affected) {
-			affected = ev.affectsConfiguration(`files.eol`);
-		}
-		if (!affected) {
-			affected = ev.affectsConfiguration(`kubernetes-yaml-formatter.includeDocumentStart`);
-		}
-
-		if (affected) {
-			console.log(`rewrite config file since something changed just now`);
-			writeConfigFile(context);
-		}
+		console.debug(`onDidChangeConfiguration: ${ev}`)
 	});
 
 	// 👍 formatter implemented using API
 	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
-		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+		provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions): vscode.TextEdit[] {
 			const txt = document.getText();
-			let args = [`-in`];
-			const confFile = configFileLocation(context);
-			if (confFile) {
-				args.push(`-conf`);
-				args.push(confFile);
-			}
-			// __dirname is `out`, so go back one level
-			let cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt');
-			if (platform === 'win32') {
-				cmd = path.join(path.dirname(__dirname), 'bin', 'yamlfmt.exe');
-			}
-			const sp = process.spawnSync(cmd, args, {
-				input: txt,
-			});
-			if (sp.status !== 0) {
-				console.error(`format ${txt} fail: ${sp.stderr.toString()}`);
-				return [];
-			}
 
-			const edits = vscode.TextEdit.replace(
-				new vscode.Range(
-					new vscode.Position(0, 0),
-					new vscode.Position(document.lineCount, document.lineAt(document.lineCount - 1).text.length)
-				), sp.stdout.toString(),
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(txt.length),
 			);
-			return [edits];
+
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options));
+
+			return [vscode.TextEdit.replace(fullRange, fmtTxt)];
 		}
 	});
-}
 
-function writeConfigFile(context: vscode.ExtensionContext) {
-	const file = configFileLocation(context);
-	if (!file) {
-		console.error(`cannot get extension storage uri path`);
-		return;
-	}
-	const tabSize = vscode.workspace.getConfiguration("", {
-		languageId: `yaml`,
-	}).get(`editor.tabSize`, 2);
-	let conf = vscode.workspace.getConfiguration();
-	const includeDocumentStart = conf.get('kubernetes-yaml-formatter.includeDocumentStart', false);
-	const compactSequenceIndent = conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true);
-	let eof = "~";
-	switch (conf.get('files.eol')) {
-		case "\n":
-			eof = "lf";
-			break;
-		case "\r\n":
-			eof = "crlf";
-			break;
-		default:
-			eof = "~";
-			break;
-	}
-	try {
-		fs.writeFileSync(file, `formatter:
-  type: basic
-  indent: ${tabSize}
-  line_ending: ${eof}
-  retain_line_breaks: true
-  compact_sequence_indent: ${compactSequenceIndent}
-  include_document_start: ${includeDocumentStart}
-`);
-	} catch (err) {
-		console.error(`write config: ${err}`);
-		vscode.window.showErrorMessage(`write config file: ${err}`);
-	}
-}
+	vscode.languages.registerDocumentRangeFormattingEditProvider('yaml', {
+		provideDocumentRangeFormattingEdits: function (document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+			const txt = document.getText(range);
 
-function configFileLocation(context: vscode.ExtensionContext): string | undefined {
-	let fsPath = context.storageUri?.fsPath;
-	if (!fsPath) {
-		try {
-			fsPath = path.join(os.tmpdir(), context.extension.id);
-			if (!fs.existsSync(fsPath)) {
-				fs.mkdirSync(fsPath);
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options));
+
+			if (txt.slice(-1) !== '\n') {
+				fmtTxt = fmtTxt.slice(0, -1); // remove last `\n` or it may break the range
 			}
-		} catch (err) {
-			throw new Error(`create tmp dir: ${err}`);
+
+			return [vscode.TextEdit.replace(range, fmtTxt)];
 		}
-		// maybe we are in the dev/debug mode.
-		console.log(`cannot get extension storage uri fs path, fallback ${fsPath}`);
+	})
+}
+
+function makeFormattingOptions(conf:vscode.WorkspaceConfiguration, options: vscode.FormattingOptions): YAML.ToStringOptions {
+	return {
+		indent: options.tabSize,
+		indentSeq: !conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true),
 	}
-	try {
-		fs.mkdirSync(fsPath, { recursive: true });
-	} catch (err) {
-		console.error(`mkdir ${fsPath}: ${err}`);
-		vscode.window.showErrorMessage(`mkdir extension storage uri path ${fsPath}: ${err}`);
-	}
-	return path.join(fsPath, "config.yaml");
+}
+
+function format(text: string, options: YAML.ToStringOptions): string {
+	return YAML.parseAllDocuments(text)
+		.map(doc => YAML.stringify(doc, options))
+		.join("\n---\n");
 }
 
 // this method is called when your extension is deactivated
