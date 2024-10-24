@@ -49,8 +49,8 @@ export function activate(context: vscode.ExtensionContext) {
 function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vscode.FormattingOptions, rangeFormatting: Boolean): YAML.ToStringOptions {
 	let op: YAML.ToStringOptions = {
 		indent: options.tabSize,
-		indentSeq: conf.get('kubernetes-yaml-formatter.indentSeq'),
-		directives: conf.get('kubernetes-yaml-formatter.directives'),
+		indentSeq: conf.get('better-yaml.indentSeq'),
+		directives: conf.get('better-yaml.directives'),
 	}
 
 	if (rangeFormatting) {

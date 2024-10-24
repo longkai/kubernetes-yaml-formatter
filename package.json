@@ -45,14 +45,14 @@
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Kubernetes Style YAML Formatter",
+      "title": "Better YAML",
       "properties": {
-        "kubernetes-yaml-formatter.indentSeq": {
+        "better-yaml.indentSeq": {
           "type": "boolean",
           "default": false,
           "description": "Whether block sequences should be indented."
         },
-        "kubernetes-yaml-formatter.directives": {
+        "better-yaml.directives": {
           "type": ["boolean", "null"],
           "default": null,
           "description": "Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required."
