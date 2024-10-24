@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 				document.positionAt(txt.length),
 			);
 
-			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options));
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, false));
 
 			return [vscode.TextEdit.replace(fullRange, fmtTxt)];
 		}
@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 		provideDocumentRangeFormattingEdits: function (document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
 			const txt = document.getText(range);
 
-			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options));
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, true));
 
 			if (txt.slice(-1) !== '\n') {
 				fmtTxt = fmtTxt.slice(0, -1); // remove last `\n` or it may break the range
@@ -46,17 +46,24 @@ export function activate(context: vscode.ExtensionContext) {
 	})
 }
 
-function makeFormattingOptions(conf:vscode.WorkspaceConfiguration, options: vscode.FormattingOptions): YAML.ToStringOptions {
-	return {
+function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vscode.FormattingOptions, rangeFormatting: Boolean): YAML.ToStringOptions {
+	let op: YAML.ToStringOptions = {
 		indent: options.tabSize,
-		indentSeq: !conf.get('kubernetes-yaml-formatter.compactSequenceIndent', true),
+		indentSeq: conf.get('kubernetes-yaml-formatter.indentSeq'),
+		directives: conf.get('kubernetes-yaml-formatter.directives'),
 	}
+
+	if (rangeFormatting) {
+		op.directives = null;
+	}
+
+	return op;
 }
 
 function format(text: string, options: YAML.ToStringOptions): string {
 	return YAML.parseAllDocuments(text)
 		.map(doc => YAML.stringify(doc, options))
-		.join("\n---\n");
+		.join("");
 }
 
 // this method is called when your extension is deactivated

@@ -1,8 +1,8 @@
 {
   "name": "kubernetes-yaml-formatter",
-  "displayName": "Kubernetes YAML Formatter",
+  "displayName": "Better YAML",
   "icon": "images/icon.png",
-  "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
+  "description": "A better YAML formatter",
   "version": "2.0.0",
   "publisher": "kennylong",
   "repository": {
@@ -47,10 +47,15 @@
     "configuration": {
       "title": "Kubernetes Style YAML Formatter",
       "properties": {
-        "kubernetes-yaml-formatter.compactSequenceIndent": {
+        "kubernetes-yaml-formatter.indentSeq": {
           "type": "boolean",
-          "default": true,
-          "description": "Use compact sequence indent, i.e. no indent"
+          "default": false,
+          "description": "Whether block sequences should be indented."
+        },
+        "kubernetes-yaml-formatter.directives": {
+          "type": ["boolean", "null"],
+          "default": null,
+          "description": "Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required."
         }
       }
     },
@@ -72,14 +77,15 @@
   "devDependencies": {
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
+    "@types/vscode": "^1.61.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0"
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
-    "yaml": "^2.5.1"
+    "yaml": "^2.6.0"
   }
 }
