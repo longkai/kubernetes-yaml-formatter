@@ -53,9 +53,20 @@
           "description": "Whether block sequences should be indented."
         },
         "better-yaml.directives": {
-          "type": ["boolean", "null"],
+          "type": [
+            "boolean",
+            "null"
+          ],
           "default": null,
           "description": "Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required."
+        },
+        "better-yaml.commentString": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Output should be valid for the current schema. By default, empty comment lines are left empty, lines consisting of a single space are replaced by #, and all other lines are prefixed with a #."
         }
       }
     },
