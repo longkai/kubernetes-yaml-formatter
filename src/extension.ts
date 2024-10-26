@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 👍 formatter implemented using API
-	vscode.languages.registerDocumentFormattingEditProvider('yaml', {
+	vscode.languages.registerDocumentFormattingEditProvider(['yaml', 'helm', 'ansible'], {
 		provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions): vscode.TextEdit[] {
 			const txt = document.getText();
 
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.languages.registerDocumentRangeFormattingEditProvider('yaml', {
+	vscode.languages.registerDocumentRangeFormattingEditProvider(['yaml', 'helm', 'ansible'], {
 		provideDocumentRangeFormattingEdits: function (document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
 			const txt = document.getText(range);
 

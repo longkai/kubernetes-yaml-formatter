@@ -74,6 +74,14 @@
       "[yaml]": {
         "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
         "editor.formatOnSave": true
+      },
+      "[helm]": {
+        "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
+        "editor.formatOnSave": false
+      },
+      "[ansible]": {
+        "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
+        "editor.formatOnSave": false
       }
     }
   },
