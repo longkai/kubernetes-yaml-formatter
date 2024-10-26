@@ -54,7 +54,7 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 		directives: conf.get('better-yaml.directives'),
 	}
 	const commentString: string | undefined | null = conf.get('better-yaml.commentString')
-	if (commentString != null && commentString != undefined) {
+	if (commentString !== null && commentString !== undefined) {
 		const js = ts.transpile(commentString);
 		op.commentString = eval(js);
 	}
