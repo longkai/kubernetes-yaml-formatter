@@ -67,9 +67,15 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 }
 
 function format(text: string, options: YAML.ToStringOptions): string {
-	return YAML.parseAllDocuments(text)
-		.map(doc => YAML.stringify(doc, options))
-		.join("");
+	try {
+		return YAML.parseAllDocuments(text)
+			.map(doc => YAML.stringify(doc, options))
+			.join("");
+	} catch (error) {
+		console.error(`format error: ${error}`);
+		vscode.window.showErrorMessage(`${error}`);
+		throw error;
+	}
 }
 
 // this method is called when your extension is deactivated
