@@ -2,7 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as YAML from "yaml";
-import * as ts from "typescript";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -55,8 +54,7 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 	}
 	const commentString: string | undefined | null = conf.get('better-yaml.commentString')
 	if (commentString !== null && commentString !== undefined) {
-		const js = ts.transpile(commentString);
-		op.commentString = eval(js);
+		op.commentString = eval(commentString);
 	}
 
 	if (rangeFormatting) {
