@@ -3,7 +3,7 @@
   "displayName": "Better YAML Formatter",
   "icon": "images/icon.png",
   "description": "A better YAML formatter",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "kennylong",
   "repository": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",

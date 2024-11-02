@@ -54,7 +54,7 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 	}
 	const commentString: string | undefined | null = conf.get('better-yaml.commentString')
 	if (commentString !== null && commentString !== undefined) {
-		op.commentString = eval(commentString);
+		op.commentString = (comment: string) => commentString + comment;
 	}
 
 	if (rangeFormatting) {
