@@ -1,89 +1,52 @@
 name: release to visual studio code extension marketplace
 
 on:
-  push:
-    tags:
-    - "*"
+  release:
+    types:
+    - prereleased
+    - published
 
 jobs:
-  build:
-    name: build yamlfmt binary
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout forked yamlfmt repo
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        repository: longkai/yamlfmt
-        ref: vscode
-    - name: setup golang
-      uses: actions/setup-go@v3
-      with:
-        go-version: '>=1.19'
-        check-latest: true
-    - name: Run GoReleaser
-      uses: goreleaser/goreleaser-action@v3
-      with:
-        distribution: goreleaser
-        version: latest
-        args: --snapshot --rm-dist
-    - name: rm tar.gz
-      run: rm -rf *.tar.gz
-    - name: upload
-      uses: actions/upload-artifact@v3
-      with:
-        name: binaries
-        path: "dist/yamlfmt_*"
-
   package:
     name: package vscode extension
     runs-on: ubuntu-latest
-    needs: build
     steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: binaries
-        path: /tmp
     - name: checkout extension repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: setup nodejs
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 22
     - name: npm install
       run: npm install
-    - name: package multi-platforms
+    - name: compile
       shell: bash
       run: |
-        declare -A map
-        map["win32-x64"]=windows_amd64_v1
-        map["win32-arm64"]=windows_arm64
-        map["linux-x64"]=linux_amd64_v1
-        map["linux-arm64"]=linux_arm64
-        map["darwin-x64"]=darwin_amd64_v1
-        map["darwin-arm64"]=darwin_arm64
-
-        for arch in ${!map[*]}; do
-          rm -rf bin/
-          mv "/tmp/yamlfmt_${map[$arch]}" bin/
-          chmod +x -R bin/
-          npx vsce package --target $arch
-        done
+        npm run compile && npm run compile-web
+    - name: package preview extension
+      shell: bash
+      if: 'github.event.prerelease'
+      run: npx vsce package --pre-release
+    - name: package release extension
+      shell: bash
+      if: '!github.event.prerelease'
+      run: npx vsce package
     - name: upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: packages
         path: "*.vsix"
+        overwrite: true
 
   release:
-    name: publish vscode extension to marketplace
+    name: publish vscode extension to the marketplace
     runs-on: ubuntu-latest
     needs: package
     if: success() && startsWith(github.ref, 'refs/tags/')
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: packages
     - run: npx vsce publish --packagePath $(find . -iname '*.vsix')
