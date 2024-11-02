@@ -3,7 +3,6 @@ name: release to visual studio code extension marketplace
 on:
   release:
     types:
-    - prereleased
     - published
 
 jobs:

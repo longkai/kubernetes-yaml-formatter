@@ -1,6 +1,6 @@
 {
   "name": "kubernetes-yaml-formatter",
-  "displayName": "Better YAML",
+  "displayName": "Better YAML Formatter",
   "icon": "images/icon.png",
   "description": "A better YAML formatter",
   "version": "2.0.0",
