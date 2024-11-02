@@ -1,4 +1,4 @@
-# Kubernetes Style YAML Formatter for Visual Studio Code
+# Better YAML Formatter for Visual Studio Code
 
 A [Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=kennylong.kubernetes-yaml-formatter) that provides format support for [YAML](https://yaml.org) language.
 

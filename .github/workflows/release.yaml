@@ -26,11 +26,11 @@ jobs:
         npm run compile && npm run compile-web
     - name: package preview extension
       shell: bash
-      if: 'github.event.prerelease'
+      if: "github.event.release.prerelease"
       run: npx vsce package --pre-release
     - name: package release extension
       shell: bash
-      if: '!github.event.prerelease'
+      if: "!github.event.release.prerelease"
       run: npx vsce package
     - name: upload
       uses: actions/upload-artifact@v4
