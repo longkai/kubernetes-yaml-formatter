@@ -11,24 +11,24 @@
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "homepage": "https://kennylong.io",
+  "badges": [
+    {
+      "description": "Github Actions",
+      "href": "https://github.com/longkai/kubernetes-yaml-formatter",
+      "url": "https://github.com/longkaikubernetes-yaml-formatter/actions/workflows/release.yaml/badge.svg"
+    }
+  ],
   "author": {
     "email": "im.longkai@gmail.com",
     "name": "Kennylong",
     "url": "https://kennylong.io"
   },
   "keywords": [
-    "Kubernetes",
     "YAML",
-    "Formatter",
-    "Customization",
+    "CI/CD",
     "DevOps",
-    "Github Actions",
-    "Helm",
-    "Ansible",
-    "Kustomize",
-    "CI",
-    "CD",
-    "Workflow"
+    "Formatter",
+    "Kubernetes"
   ],
   "bugs": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter/issues"
@@ -40,9 +40,12 @@
     "vscode": "^1.61.0"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onLanguage:yaml",
+    "onLanguage:helm",
+    "onLanguage:ansible"
   ],
   "main": "./out/extension.js",
+  "browser": "./dist/web/extension.js",
   "contributes": {
     "configuration": {
       "title": "Better YAML",
@@ -88,10 +91,13 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
+    "compile-web": "webpack",
     "watch": "tsc -watch -p ./",
+    "watch-web": "webpack --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "package-web": "webpack --mode production --devtool hidden-source-map"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.7",
@@ -102,7 +108,13 @@
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "eslint": "^8.57.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "@types/webpack-env": "^1.18.5",
+    "assert": "^2.1.0",
+    "process": "^0.11.10"
   },
   "dependencies": {
     "yaml": "^2.6.0"
