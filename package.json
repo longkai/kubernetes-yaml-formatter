@@ -3,7 +3,7 @@
   "displayName": "Better YAML Formatter",
   "icon": "images/icon.png",
   "description": "A better YAML formatter",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "publisher": "kennylong",
   "repository": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",
@@ -89,7 +89,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile && npm run compile-web",
     "compile": "tsc -p ./",
     "compile-web": "webpack",
     "watch": "tsc -watch -p ./",
