@@ -1,16 +1,22 @@
-# Kubernetes Style YAML Formatter for Visual Studio Code
+# Better YAML Formatter for Visual Studio Code
 
 A [Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=kennylong.kubernetes-yaml-formatter) that provides format support for [YAML](https://yaml.org) language.
 
-You find the right format extension if you come from DevOps world, e.g., [Kubernetes](https://kubernetes.io/docs/concepts/), [Ansible Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html) or CI workflow like [Github Actions](https://docs.github.com/en/actions) and so on.
+Frustrated of the builtin formatter with its own [option philosophy](https://prettier.io/docs/en/option-philosophy.html)?
 
-**We all love Emojis, and yes, it has builtin support!**
+Or you guys comes from devops world where dealing with a lot of yaml everyday like kubernetes, ansible or helm template.
+
+And you have your own prefer style of YAML, e.g., **do not indent sequence elements** or other customization settings.
+
+This extension is made for you :)
 
 ## Features
 
-![Format YAML](images/showcase.gif)
+Format **correct**, **consistent** and **customized** yaml text with **Better YAML Formatter**.
 
-As a Kubernetes developer, aka YAML engineer, you deal with a lot of yaml files everyday. Take the k8s yaml for example:
+https://github.com/user-attachments/assets/dfdec44b-221f-436d-9d90-413f0c0effe6
+
+Take the k8s yaml for example:
 
 ```yaml
 apiVersion: apps/v1
@@ -29,7 +35,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: nginx:latest
         ports:
         - containerPort: 80
 ```
@@ -40,33 +46,23 @@ Unluckily, the builtin yaml format has its own [option philosophy](https://prett
 
 It's useless. I have to keep the style manually every time editing yaml files, or you will end up with a non-idiomatic one.
 
-It's tedious. So I create this extension to make life easier. Now you can control which way you prefer and everyone is happy.
-
-**Enjoy!**
+It's tedious. So I create this extension to make life easier.
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-* `kubernetes-yaml-formatter.compactSequenceIndent`: Enable compact sequence indent, i.e. no indent (default `true`).
-* `kubernetes-yaml-formatter.includeDocumentStart`: Include `---` at document start (default `false`).
-
-It makes format yaml on save default to `true`, you can disable it:
-
-```json
-"[yaml]": {
-  "editor.formatOnSave": false
-}
-```
+* `better-yaml.directives`: Whether block sequences should be indented.
+* `better-yaml.directives`: Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required.
+* `better-yaml.commentString`: Change the comment prefix string. By default, empty comment lines are left empty, lines consisting of a single space are replaced by `#`, and all other lines are prefixed with a `#`.
 
 ## Thanks
 
 Thanks [lupengpeng](https://github.com/iamlupeng1991) for the icon design. It's great!
 
-Thanks the following projects:
+Many thanks the following projects:
 
-* [google/yamlfmt](https://github.com/google/yamlfmt)
-* [go-yaml](github.com/natasha41575/yaml)
+* [eemeli/yaml](https://github.com/eemeli/yaml)
 
 Without them there wouldn't be this extension.
 

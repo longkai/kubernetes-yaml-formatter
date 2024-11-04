@@ -1,9 +1,9 @@
 {
   "name": "kubernetes-yaml-formatter",
-  "displayName": "Kubernetes YAML Formatter",
+  "displayName": "Better YAML Formatter",
   "icon": "images/icon.png",
-  "description": "A better YAML formatter for DevOps like Kubernetes, Ansible, CI/CD, etc.",
-  "version": "1.1.0",
+  "description": "A better YAML formatter",
+  "version": "2.0.0",
   "publisher": "kennylong",
   "repository": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter.git",
@@ -11,24 +11,24 @@
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "homepage": "https://kennylong.io",
+  "badges": [
+    {
+      "description": "Github Actions",
+      "href": "https://github.com/longkai/kubernetes-yaml-formatter",
+      "url": "https://github.com/longkaikubernetes-yaml-formatter/actions/workflows/release.yaml/badge.svg"
+    }
+  ],
   "author": {
     "email": "im.longkai@gmail.com",
     "name": "Kennylong",
     "url": "https://kennylong.io"
   },
   "keywords": [
-    "Kubernetes",
     "YAML",
-    "Formatter",
-    "Customization",
+    "CI/CD",
     "DevOps",
-    "Github Actions",
-    "Helm",
-    "Ansible",
-    "Kustomize",
-    "CI",
-    "CD",
-    "Workflow"
+    "Formatter",
+    "Kubernetes"
   ],
   "bugs": {
     "url": "https://github.com/longkai/kubernetes-yaml-formatter/issues"
@@ -37,25 +37,39 @@
     "Formatters"
   ],
   "engines": {
-    "vscode": "^1.61.0"
+    "vscode": "^1.63.0"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onLanguage:yaml",
+    "onLanguage:helm",
+    "onLanguage:ansible"
   ],
   "main": "./out/extension.js",
+  "browser": "./dist/web/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Kubernetes Style YAML Formatter",
+      "title": "Better YAML",
       "properties": {
-        "kubernetes-yaml-formatter.compactSequenceIndent": {
-          "type": "boolean",
-          "default": true,
-          "description": "Use compact sequence indent, i.e. no indent"
-        },
-        "kubernetes-yaml-formatter.includeDocumentStart": {
+        "better-yaml.indentSeq": {
           "type": "boolean",
           "default": false,
-          "description": "Include --- at document start"
+          "description": "Whether block sequences should be indented."
+        },
+        "better-yaml.directives": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
+          "description": "Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required."
+        },
+        "better-yaml.commentString": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Output should be valid for the current schema. By default, empty comment lines are left empty, lines consisting of a single space are replaced by #, and all other lines are prefixed with a #."
         }
       }
     },
@@ -63,28 +77,46 @@
       "[yaml]": {
         "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
         "editor.formatOnSave": true
+      },
+      "[helm]": {
+        "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
+        "editor.formatOnSave": false
+      },
+      "[ansible]": {
+        "editor.defaultFormatter": "kennylong.kubernetes-yaml-formatter",
+        "editor.formatOnSave": false
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile && npm run compile-web",
     "compile": "tsc -p ./",
+    "compile-web": "webpack",
     "watch": "tsc -watch -p ./",
+    "watch-web": "webpack --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "vscode-test",
+    "package-web": "webpack --mode production --devtool hidden-source-map"
   },
   "devDependencies": {
-    "@types/vscode": "^1.61.0",
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "eslint": "^8.20.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.63.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "@types/webpack-env": "^1.18.5",
+    "assert": "^2.1.0",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "yaml": "^2.6.0"
   }
 }
