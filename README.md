@@ -14,6 +14,8 @@ This extension is made for you :)
 
 Format **correct**, **consistent** and **customized** yaml text with **Better YAML Formatter**.
 
+Watch the demo video:
+
 https://github.com/user-attachments/assets/dfdec44b-221f-436d-9d90-413f0c0effe6
 
 Take the k8s yaml for example:
@@ -55,6 +57,7 @@ This extension contributes the following settings:
 * `better-yaml.directives`: Whether block sequences should be indented.
 * `better-yaml.directives`: Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required.
 * `better-yaml.commentString`: Change the comment prefix string. By default, empty comment lines are left empty, lines consisting of a single space are replaced by `#`, and all other lines are prefixed with a `#`.
+* `better-yaml.lineWidth`: Maximum line width (set to 0 to disable folding). This is a soft limit, as only double-quoted semantics allow for inserting a line break in the middle of a word.
 
 ## Thanks
 
