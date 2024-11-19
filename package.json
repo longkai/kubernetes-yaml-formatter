@@ -77,6 +77,13 @@
           ],
           "default": 0,
           "description": "Maximum line width (set to 0 to disable folding). This is a soft limit, as only double-quoted semantics allow for inserting a line break in the middle of a word."
+        },
+        "better-yaml.documentOptions.version": {
+          "type": [
+            "string"
+          ],
+          "default": "1.2",
+          "description": "The YAML version used by documents without a %YAML directive. Must be '1.1' or '1.2'."
         }
       }
     },
@@ -124,6 +131,6 @@
     "process": "^0.11.10"
   },
   "dependencies": {
-    "yaml": "^2.6.0"
+    "yaml": "^2.6.1"
   }
 }

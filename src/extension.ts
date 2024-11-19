@@ -25,7 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 				document.positionAt(txt.length),
 			);
 
-			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, false));
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, false),
+				makeDocumentOptions(vscode.workspace.getConfiguration()));
 
 			return [vscode.TextEdit.replace(fullRange, fmtTxt)];
 		}
@@ -35,7 +36,8 @@ export function activate(context: vscode.ExtensionContext) {
 		provideDocumentRangeFormattingEdits: function (document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
 			const txt = document.getText(range);
 
-			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, true));
+			let fmtTxt = format(txt, makeFormattingOptions(vscode.workspace.getConfiguration(), options, true),
+				makeDocumentOptions(vscode.workspace.getConfiguration()));
 
 			if (txt.slice(-1) !== '\n') {
 				fmtTxt = fmtTxt.slice(0, -1); // remove last `\n` or it may break the range
@@ -65,9 +67,16 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 	return op;
 }
 
-function format(text: string, options: YAML.ToStringOptions): string {
+function makeDocumentOptions(conf: vscode.WorkspaceConfiguration): YAML.DocumentOptions {
+	let op: YAML.DocumentOptions = {
+		version: conf.get('better-yaml.documentOptions.version')
+	}
+	return op;
+}
+
+function format(text: string, options: YAML.ToStringOptions, docOptions: YAML.DocumentOptions): string {
 	try {
-		return YAML.parseAllDocuments(text)
+		return YAML.parseAllDocuments(text, docOptions)
 			.map(doc => YAML.stringify(doc, options))
 			.join("");
 	} catch (error) {

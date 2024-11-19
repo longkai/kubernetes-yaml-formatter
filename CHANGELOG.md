@@ -4,6 +4,11 @@ All notable changes to the "kubernetes-yaml-formatter" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 2.3.0 (19 Nov 2024)
+
+- add `better-yaml.documentOptions.version` global option to set YAML version used by documents without a %YAML directive.
+- upgrade dependencies.
+
 ## 2.0.0 (03 Nov 2024)
 
 Rename to **Better YAML Formatter** since it works well with what you think about YAML :)
