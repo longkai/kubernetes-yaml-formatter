@@ -78,7 +78,7 @@ function format(text: string, options: YAML.ToStringOptions, docOptions: YAML.Do
 	try {
 		return YAML.parseAllDocuments(text, docOptions)
 			.map(doc => YAML.stringify(doc, options))
-			.join("");
+			.join("") || text; // incase the input text is comment or something ignore by parser.
 	} catch (error) {
 		console.error(`format error: ${error}`);
 		vscode.window.showErrorMessage(`${error}`);
