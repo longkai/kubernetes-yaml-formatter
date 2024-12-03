@@ -58,6 +58,7 @@ This extension contributes the following settings:
 * `better-yaml.directives`: Include directives in the output. If true, at least the document-start marker --- is always included. If false, no directives or marker is ever included. If null, directives and marker may be included if required.
 * `better-yaml.commentString`: Change the comment prefix string. By default, empty comment lines are left empty, lines consisting of a single space are replaced by `#`, and all other lines are prefixed with a `#`.
 * `better-yaml.lineWidth`: Maximum line width (set to 0 to disable folding). This is a soft limit, as only double-quoted semantics allow for inserting a line break in the middle of a word.
+* `better-yaml.flowCollectionPadding`: When true, a single space of padding will be added inside the delimiters of non-empty single-line flow collections.
 * `better-yaml.documentOptions.version`: The YAML version used by documents without a %YAML directive. Must be '1.1' or '1.2'. Default to '1.2'.
 
 ## Thanks

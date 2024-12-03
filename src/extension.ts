@@ -54,6 +54,7 @@ function makeFormattingOptions(conf: vscode.WorkspaceConfiguration, options: vsc
 		indentSeq: conf.get('better-yaml.indentSeq'),
 		directives: conf.get('better-yaml.directives'),
 		lineWidth: conf.get('better-yaml.lineWidth'),
+		flowCollectionPadding: conf.get('better-yaml.flowCollectionPadding'),
 	}
 	const commentString: string | undefined | null = conf.get('better-yaml.commentString')
 	if (commentString !== null && commentString !== undefined) {

@@ -4,6 +4,10 @@ All notable changes to the "kubernetes-yaml-formatter" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 2.3.1 (03 Dec 2024)
+
+- add `better-yaml.flowCollectionPadding` option. When true, a single space of padding will be added inside the delimiters of non-empty single-line flow collections. Default true.
+
 ## 2.3.0 (19 Nov 2024)
 
 - add `better-yaml.documentOptions.version` global option to set YAML version used by documents without a %YAML directive.
