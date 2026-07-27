@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// 👍 formatter implemented using API
-	vscode.languages.registerDocumentFormattingEditProvider(['yaml', 'helm', 'ansible'], {
+	vscode.languages.registerDocumentFormattingEditProvider(['yaml', 'helm', 'ansible', 'azure-pipelines'], {
 		provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions): vscode.TextEdit[] {
 			const txt = document.getText();
 
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.languages.registerDocumentRangeFormattingEditProvider(['yaml', 'helm', 'ansible'], {
+	vscode.languages.registerDocumentRangeFormattingEditProvider(['yaml', 'helm', 'ansible', 'azure-pipelines'], {
 		provideDocumentRangeFormattingEdits: function (document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
 			console.log(`start ${JSON.stringify(range.start)}, end ${JSON.stringify(range.end)}`);
 			const leftPadding = range.start.character;
